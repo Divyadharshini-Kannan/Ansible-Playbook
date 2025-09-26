@@ -6,7 +6,7 @@
   tasks:
 
    - name: clone the git repository
-     action: git repo=https://github.com/Msocial123/Flipkart-Clone.git dest=/home/ansible/Ansible-Playbook version=master
+     action: git repo=https://github.com/Msocial123/Flipkart-Clone.git dest=/home/ansible/Ansible-Playbook version=master force=yes
 
    - name: start the httpd server
      action: service name=httpd state=started
