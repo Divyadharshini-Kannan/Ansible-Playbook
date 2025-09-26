@@ -16,7 +16,7 @@
       action: yum pkg=httpd state=present  
 
     - name: install the mariadb-server
-      action: yum pkg=mariadb-server state=present
+      action: yum pkg=mariadb-10.11* state=present
 
     - name: starting the webservers
       action: service name=httpd state=started
