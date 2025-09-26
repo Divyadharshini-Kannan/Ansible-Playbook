@@ -16,10 +16,10 @@
       action: yum pkg=httpd state=present   
 
     - name: starting the webservers
-      action: service pkg=httpd state=started
+      action: service name=httpd state=started
 
     - name: stoping the webservers
-      action: service pkg=httpd state=stopped
+      action: service name=httpd state=stopped
 
     - name: restarting the webservers
-      action: service pkg=httpd state=restarted  
+      action: service name=httpd state=restarted  
