@@ -1,0 +1,15 @@
+---
+- hosts: webservers
+  user: ansible
+  become: true
+  connection: ssh
+  tasks:
+
+   - name: clone the git repository
+     action: git repo=https://github.com/Msocial123/Flipkart-Clone.git dest=/home/ansible/Ansible-Playbook version=master
+
+   - name: start the httpd server
+     action: service name=httpd state=started
+
+   - name: set permission to the clone repository 
+     action: file path=/home/ansible/Ansible-Playbook owner=apache group=apache state=directory recurse=yes
