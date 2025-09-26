@@ -6,14 +6,17 @@
   tasks:
 
     - name: install the java 
-      action: yum pkg=java-17-amazon-corretto state=present
+      action: yum pkg=java-23-amazon-corretto state=present
       ignore_errors: yes
 
     - name: install the python
       action: yum pkg=python3 state=present  
 
     - name: install the webservers
-      action: yum pkg=httpd state=present   
+      action: yum pkg=httpd state=present  
+
+    - name: install the mysqlserver
+      action: yum pkg=mysqlserver state=present
 
     - name: starting the webservers
       action: service name=httpd state=started
@@ -22,4 +25,13 @@
       action: service name=httpd state=stopped
 
     - name: restarting the webservers
-      action: service name=httpd state=restarted  
+      action: service name=httpd state=restarted 
+
+    - name: starting the sqlservers
+      action: service name=mysqlserver state=started
+
+    - name: stoping the sqlservers
+      action: service name=mysqlserver state=stopped
+
+    - name: restarting the sqlservers
+      action: service name=mysqlserver state=restarted   
