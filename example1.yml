@@ -1,0 +1,24 @@
+---
+- hosts: webservers
+  user: ansible
+  become: true
+  connection: ssh
+  tasks:
+
+    - name: install the java 
+      action: service pkg=java state=present
+
+    - name: install the python
+      action: service pkg=python state=present  
+
+    - name: install the webservers
+      action: service pkg=httpd state=present   
+
+    - name: starting the webservers
+      action: service pkg=httpd state=started
+
+    - name: stoping the webservers
+      action: service pkg=httpd state=stopped
+
+    - name: restarting the webservers
+      action: service pkg=httpd state=restarted  
