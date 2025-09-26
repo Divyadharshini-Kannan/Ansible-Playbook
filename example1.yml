@@ -6,14 +6,14 @@
   tasks:
 
     - name: install the java 
-      action: service pkg=java-17-amazon-corretto state=present
+      action: yum pkg=java-17-amazon-corretto state=present
       ignore_errors: yes
 
     - name: install the python
-      action: service pkg=python-3 state=present  
+      action: yum pkg=python-3 state=present  
 
     - name: install the webservers
-      action: service pkg=httpd state=present   
+      action: yum pkg=httpd state=present   
 
     - name: starting the webservers
       action: service pkg=httpd state=started
