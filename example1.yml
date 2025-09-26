@@ -28,10 +28,10 @@
       action: service name=httpd state=restarted 
 
     - name: starting the sqlservers
-      action: service name=mysqlserver state=started
+      action: service name=mysql-server state=started
 
     - name: stoping the sqlservers
-      action: service name=mysqlserver state=stopped
+      action: service name=mysql-server state=stopped
 
     - name: restarting the sqlservers
-      action: service name=mysqlserver state=restarted   
+      action: service name=mysql-server state=restarted   
