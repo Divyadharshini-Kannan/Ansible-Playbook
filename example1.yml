@@ -28,10 +28,10 @@
       action: service name=httpd state=restarted 
 
     - name: starting the mariadb-server
-      action: service name=mariadb-server state=started
+      action: service name=mariadb105 state=started
 
     - name: stoping the mariadb-server
-      action: service name=mariadb-server state=stopped
+      action: service name=mariadb105 state=stopped
 
     - name: restarting the mariadb-server
-      action: service name=mariadb-server state=restarted   
+      action: service name=mariadb105 state=restarted   
