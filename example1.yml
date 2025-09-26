@@ -7,6 +7,7 @@
 
     - name: install the java 
       action: service pkg=java-17-amazon-corretto state=present
+      ignore_errors: yes
 
     - name: install the python
       action: service pkg=python-3 state=present  
