@@ -10,7 +10,7 @@
       ignore_errors: yes
 
     - name: install the python
-      action: yum pkg=python-3 state=present  
+      action: yum pkg=python3 state=present  
 
     - name: install the webservers
       action: yum pkg=httpd state=present   
