@@ -15,8 +15,8 @@
     - name: install the webservers
       action: yum pkg=httpd state=present  
 
-    - name: install the mysqlserver
-      action: yum pkg=mysql-server state=present
+    - name: install the mariadb-server
+      action: yum pkg=mariadb-server state=present
 
     - name: starting the webservers
       action: service name=httpd state=started
@@ -27,11 +27,11 @@
     - name: restarting the webservers
       action: service name=httpd state=restarted 
 
-    - name: starting the sqlservers
-      action: service name=mysql-server state=started
+    - name: starting the mariadb-server
+      action: service name=mariadb-server state=started
 
-    - name: stoping the sqlservers
-      action: service name=mysql-server state=stopped
+    - name: stoping the mariadb-server
+      action: service name=mariadb-server state=stopped
 
-    - name: restarting the sqlservers
-      action: service name=mysql-server state=restarted   
+    - name: restarting the mariadb-server
+      action: service name=mariadb-server state=restarted   
