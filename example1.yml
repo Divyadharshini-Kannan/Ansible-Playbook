@@ -16,7 +16,7 @@
       action: yum pkg=httpd state=present  
 
     - name: install the mysqlserver
-      action: yum pkg=mysqlserver state=present
+      action: yum pkg=mysql-server state=present
 
     - name: starting the webservers
       action: service name=httpd state=started
