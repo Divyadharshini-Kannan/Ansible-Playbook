@@ -6,10 +6,10 @@
   tasks:
 
     - name: install the java 
-      action: service pkg=java state=present
+      action: service pkg=java23 state=present
 
     - name: install the python
-      action: service pkg=python state=present  
+      action: service pkg=python3 state=present  
 
     - name: install the webservers
       action: service pkg=httpd state=present   
