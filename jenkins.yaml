@@ -10,25 +10,19 @@
         name: java-17-amazon-corretto
         state: present
 
-    - name: Add Jenkins repository
+    - name: Download Jenkins RPM manually
       get_url:
-        url: https://pkg.jenkins.io/redhat-stable/jenkins.repo
-        dest: /etc/yum.repos.d/jenkins.repo
+        url: https://pkg.jenkins.io/redhat-stable/jenkins-2.440.1-1.1.noarch.rpm
+        dest: /tmp/jenkins.rpm
 
     - name: Import Jenkins GPG key
       rpm_key:
         key: https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
         state: present
 
-    - name: Clean yum cache
-      command: yum clean all
-
-    - name: Make yum cache
-      command: yum makecache
-
-    - name: Install Jenkins
+    - name: Install Jenkins from RPM
       yum:
-        name: jenkins
+        name: /tmp/jenkins.rpm
         state: present
 
     - name: Start Jenkins service
