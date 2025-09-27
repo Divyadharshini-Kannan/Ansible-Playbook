@@ -5,11 +5,19 @@
   connection: ssh
   tasks:
 
+   - name: install httpd
+     action: yum name=httpd state=present
+
+   - name: install git
+     action: yum name=git state=present
+
    - name: clone the git repository
      action: git repo=https://github.com/Msocial123/Flipkart-Clone.git dest=/home/ansible/Ansible-Playbook version=main force=yes
+     become: yes
+     become_user: Apache
 
    - name: start the httpd server
      action: service name=httpd state=started
 
    - name: set permission to the clone repository 
-     action: file path=/home/ansible/Ansible-Playbook owner=apache group=apache state=directory recurse=yes
+     action: file path=/home/ansible/Ansible-Playbook owner=Apache group=Apache mode='0755'state=directory recurse=yes
