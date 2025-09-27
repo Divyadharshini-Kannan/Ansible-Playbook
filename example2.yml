@@ -15,18 +15,26 @@
         name: git
         state: present
 
-    - name: Ensure destination directory exists
+    - name: Ensure /home/ansible directory exists
       ansible.builtin.file:
-        path: /home/ansible/flikartclone
+        path: /home/ansible
         state: directory
         owner: ansible
         group: ansible
         mode: '0755'
 
-    - name: Clone the Git repository
+    - name: Ensure Ansible-Playbook directory exists
+      ansible.builtin.file:
+        path: /home/ansible/Ansible-Playbook
+        state: directory
+        owner: ansible
+        group: ansible
+        mode: '0755'
+
+    - name: Clone the Git repository into /home/ansible/Ansible-Playbook
       ansible.builtin.git:
         repo: https://github.com/Msocial123/Flipkart-Clone.git
-        dest: /home/ansible/flikartclone
+        dest: /home/ansible/Ansible-Playbook
         version: main
         force: yes
       become_user: ansible
@@ -36,4 +44,3 @@
         name: httpd
         state: started
         enabled: true
-
