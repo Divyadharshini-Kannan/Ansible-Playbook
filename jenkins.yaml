@@ -5,25 +5,24 @@
   connection: ssh
 
   tasks:
+    - name: Update system packages
+      yum:
+        name: '*'
+        state: latest
+
     - name: Install OpenJDK 17
       yum:
-        name: java-17-amazon-corretto.x86_64
+        name: java-17-amazon-corretto
         state: present
 
     - name: Add Jenkins repository
-      copy:
+      get_url:
+        url: https://pkg.jenkins.io/redhat/jenkins.repo
         dest: /etc/yum.repos.d/jenkins.repo
-        content: |
-          [jenkins]
-          name=Jenkins
-          baseurl=https://pkg.jenkins.io/redhat-stable
-          gpgcheck=1
-          gpgkey=https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
-          enabled=1
 
     - name: Import Jenkins GPG key
       rpm_key:
-        key: https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+        key: https://pkg.jenkins.io/redhat-stable/jenkins.io.key
         state: present
 
     - name: Clean yum cache
@@ -33,7 +32,6 @@
       yum:
         name: jenkins
         state: present
-
     - name: Start Jenkins service
       service:
         name: jenkins
@@ -43,6 +41,7 @@
       systemd:
         name: jenkins
         enabled: true
+
     - name: Wait for Jenkins port 8080 to be available
       wait_for:
         port: 8080
