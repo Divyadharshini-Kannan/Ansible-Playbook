@@ -12,10 +12,7 @@
          -httpd
        state: present
 
-    - name: git install
-      yum:
-        name: git
-        state: present
+    
 
     - name: ensure httpd
       service:
@@ -25,9 +22,9 @@
 
     - name: clone git repository
       git: 
-        repo: https://github.com/Msocial123/Flipkart-Clone.git
-        dest: /home/ansible/Flipkart-Clone
-        version: main
+        repo: "https://github.com/Msocial123/Flipkart-Clone.git"
+        dest: "/home/ansible/Flipkart-Clone"
+        version: master
         force: yes
 
     - name: copy application
