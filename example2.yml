@@ -1,6 +1,5 @@
 ---
-- name: Setup web server and deploy Flipkart clone
-  hosts: webservers
+- hosts: webservers
   become: true
   connection: ssh
   tasks:
@@ -11,8 +10,6 @@
          -git
          -httpd
        state: present
-
-    
 
     - name: ensure httpd
       service:
