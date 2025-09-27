@@ -19,14 +19,15 @@
       get_url:
         url: "{{ jenkins_rpm_url }}"
         dest: /tmp/jenkins.rpm
+        mode: '0644'
 
     - name: Import Jenkins GPG key
       rpm_key:
         key: "{{ jenkins_key_url }}"
         state: present
 
-    - name: Install Jenkins from RPM
-      yum:
+    - name: Install Jenkins using rpm module
+      rpm:
         name: /tmp/jenkins.rpm
         state: present
 
