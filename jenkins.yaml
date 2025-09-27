@@ -9,34 +9,46 @@
       yum:
         name: '*'
         state: latest
-
     - name: Install OpenJDK 17
       yum:
         name: java-17-amazon-corretto
         state: present
 
     - name: Add Jenkins repository
-      get_url:
-        url: https://pkg.jenkins.io/redhat/jenkins.repo
-        dest: /etc/yum.repos.d/jenkins.repo
+      shell: |
+        echo "[jenkins]
+        name=Jenkins
+        baseurl=http://pkg.jenkins.io/redhat
+        gpgcheck=1
+        gpgkey=https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+        enabled=1" > /etc/yum.repos.d/jenkins.repo
+      args:
+        creates: /etc/yum.repos.d/jenkins.repo
 
     - name: Import Jenkins GPG key
       rpm_key:
-        key: https://pkg.jenkins.io/redhat-stable/jenkins.io.key
+        key: https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
         state: present
 
     - name: Clean yum cache
       command: yum clean all
 
+    - name: Verify Jenkins repo is available
+      command: yum repolist
+      register: repolist_output
+
+    - name: Debug yum repolist
+      debug:
+        var: repolist_output.stdout_lines
     - name: Install Jenkins
       yum:
         name: jenkins
         state: present
+
     - name: Start Jenkins service
       service:
         name: jenkins
         state: started
-
     - name: Enable Jenkins to start on boot
       systemd:
         name: jenkins
