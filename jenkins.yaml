@@ -10,20 +10,24 @@
         name: java-17-amazon-corretto.x86_64
         state: present
 
-    - name: Download Jenkins repository file
-      get_url:
-        url: https://pkg.jenkins.io/redhat-stable/jenkins.repo
+    - name: Add Jenkins repository
+      copy:
         dest: /etc/yum.repos.d/jenkins.repo
+        content: |
+          [jenkins]
+          name=Jenkins
+          baseurl=https://pkg.jenkins.io/redhat-stable
+          gpgcheck=1
+          gpgkey=https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+          enabled=1
 
     - name: Import Jenkins GPG key
       rpm_key:
         key: https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
         state: present
 
-    - name: Enable EPEL repository using amazon-linux-extras
-      shell: amazon-linux-extras install epel -y
-      args:
-        creates: /etc/yum.repos.d/epel.repo
+    - name: Clean yum cache
+      command: yum clean all
 
     - name: Install Jenkins
       yum:
@@ -39,7 +43,6 @@
       systemd:
         name: jenkins
         enabled: true
-
     - name: Wait for Jenkins port 8080 to be available
       wait_for:
         port: 8080
