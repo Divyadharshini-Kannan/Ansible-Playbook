@@ -15,25 +15,25 @@
         name: git
         state: present
 
+    - name: Ensure destination directory exists
+      ansible.builtin.file:
+        path: /home/ansible/flikartclone
+        state: directory
+        owner: ansible
+        group: ansible
+        mode: '0755'
+
     - name: Clone the Git repository
       ansible.builtin.git:
         repo: https://github.com/Msocial123/Flipkart-Clone.git
-        dest: /home/ansible/Ansible-Playbook
+        dest: /home/ansible/flikartclone
         version: main
         force: yes
-      become_user: apache  # Ensure this user exists on your system
+      become_user: ansible
 
-    - name: Start the httpd service
+    - name: Start and enable httpd service
       ansible.builtin.service:
         name: httpd
         state: started
         enabled: true
-
-    - name: Set permissions on the cloned repository
-      ansible.builtin.file:
-        path: /home/ansible/Ansible-Playbook
-        owner: apache
-        group: apache
-        state: directory
-        recurse: yes
 
