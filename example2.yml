@@ -5,61 +5,29 @@
   connection: ssh
   tasks:
 
-    - name: Install httpd
-      ansible.builtin.yum:
-        name: httpd
-        state: present
-
-    - name: Install git
-      ansible.builtin.yum:
+    - name: git install
+      yum:
         name: git
         state: present
 
-    - name: Ensure /home/ansible directory exists
-      ansible.builtin.file:
-        path: /home/ansible
-        state: directory
-        owner: ansible
-        group: ansible
-        mode: '0755'
-
-    - name: Ensure Ansible-Playbook directory exists
-      ansible.builtin.file:
-        path: /home/ansible/Ansible-Playbook
-        state: directory
-        owner: ansible
-        group: ansible
-        mode: '0755'
-
-    - name: Clone the Git repository
-      ansible.builtin.git:
+    - name: clone git repository
+      git: 
         repo: https://github.com/Msocial123/Flipkart-Clone.git
         dest: /home/ansible/Ansible-Playbook
         version: main
         force: yes
-      become_user: ansible
 
-    - name: Start and enable httpd
-      ansible.builtin.service:
+    - name: set permission
+      file:
+        path: /home/ansible/Ansible-Playbook
+        owner: apache
+        group: apache
+        mode: '0755'
+        recurse: yes
+
+    - name: ensure httpd
+      service:
         name: httpd
-        state: started
-        enabled: true
+        state: stated
+        enabled: yes
 
-    - name: Configure Apache to serve the cloned repo
-      ansible.builtin.copy:
-        dest: /etc/httpd/conf.d/flipkart.conf
-        content: |
-          <VirtualHost *:80>
-              DocumentRoot "/home/ansible/Ansible-Playbook"
-              <Directory "/home/ansible/Ansible-Playbook">
-                  AllowOverride All
-                  Require all granted
-              </Directory>
-          </VirtualHost>
-      notify: Restart Apache
-
-  handlers:
-    - name: Restart Apache
-      ansible.builtin.service:
-        name: httpd
-        state: restarted
