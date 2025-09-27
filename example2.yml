@@ -5,10 +5,23 @@
   connection: ssh
   tasks:
 
+    - name: install
+      yum:
+       name:
+         -git
+         -httpd
+       state: present
+
     - name: git install
       yum:
         name: git
         state: present
+
+    - name: ensure httpd
+      service:
+        name: httpd
+        state: stated
+        enabled: yes
 
     - name: clone git repository
       git: 
@@ -19,8 +32,8 @@
 
     - name: copy application
       copy:
-        src: https://github.com/Msocial123/Flipkart-Clone.git
-        dest: /home/ansible/Flipkart-Clone
+        src: "/home/ansible/Flipkart-Clone"
+        dest: "/var/www/html/"
         owner: apache
         group: apache
         mode: '0755'
@@ -33,9 +46,5 @@
         group: apache
         recurse: yes
 
-    - name: ensure httpd
-      service:
-        name: httpd
-        state: stated
-        enabled: yes
+    
 
