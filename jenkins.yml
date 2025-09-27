@@ -32,6 +32,7 @@
       service:
         name: jenkins
         state: started
+      ignore_errors: yes   
  
     - name: Enable Jenkins service
       systemd:
