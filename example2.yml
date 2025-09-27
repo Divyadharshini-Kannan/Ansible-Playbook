@@ -1,23 +1,39 @@
 ---
-- hosts: webservers
-  user: ansible
+- name: Setup web servers and deploy Flipkart clone
+  hosts: webservers
   become: true
   connection: ssh
   tasks:
 
-   - name: install httpd
-     action: yum name=httpd state=present
+    - name: Install httpd
+      ansible.builtin.yum:
+        name: httpd
+        state: present
 
-   - name: install git
-     action: yum name=git state=present
+    - name: Install git
+      ansible.builtin.yum:
+        name: git
+        state: present
 
-   - name: clone the git repository
-     action: git repo=https://github.com/Msocial123/Flipkart-Clone.git dest=/home/ansible/Ansible-Playbook version=main force=yes
-     become: yes
-     become_user: Apache
+    - name: Clone the Git repository
+      ansible.builtin.git:
+        repo: https://github.com/Msocial123/Flipkart-Clone.git
+        dest: /home/ansible/Ansible-Playbook
+        version: main
+        force: yes
+      become_user: apache  # Ensure this user exists on your system
 
-   - name: start the httpd server
-     action: service name=httpd state=started
+    - name: Start the httpd service
+      ansible.builtin.service:
+        name: httpd
+        state: started
+        enabled: true
 
-   - name: set permission to the clone repository 
-     action: file path=/home/ansible/Ansible-Playbook owner=Capgemini group=Capgemini state=directory recurse=yes
+    - name: Set permissions on the cloned repository
+      ansible.builtin.file:
+        path: /home/ansible/Ansible-Playbook
+        owner: Capgemini
+        group: Capgemini
+        state: directory
+        recurse: yes
+
