@@ -32,8 +32,8 @@
     - name: Set permissions on the cloned repository
       ansible.builtin.file:
         path: /home/ansible/Ansible-Playbook
-        owner: Capgemini
-        group: Capgemini
+        owner: apache
+        group: apache
         state: directory
         recurse: yes
 
