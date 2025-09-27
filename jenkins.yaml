@@ -3,48 +3,51 @@
   user: ansible
   become: yes
   connection: ssh
-
+ 
+  vars:
+    java_package: java-17-amazon-corretto-devel
+    jenkins_repo_url: https://pkg.jenkins.io/redhat-stable/jenkins.repo
+    jenkins_key_url: https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+ 
   tasks:
     - name: Install OpenJDK 17
-      yum:
-        name: java-17-amazon-corretto
+      dnf:
+        name: "{{ java_package }}"
         state: present
-
-    - name: Download Jenkins RPM manually
+ 
+    - name: Download Jenkins repository file
       get_url:
-        url: https://pkg.jenkins.io/redhat-stable/jenkins-2.440.1-1.1.noarch.rpm
-        dest: /tmp/jenkins.rpm
-
+        url: "{{ jenkins_repo_url }}"
+        dest: /etc/yum.repos.d/jenkins.repo
+ 
     - name: Import Jenkins GPG key
-      rpm_key:
-        key: https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+      shell: rpm --import "{{ jenkins_key_url }}"
+ 
+    - name: Install Jenkins
+      dnf:
+        name: jenkins
         state: present
-
-    - name: Install Jenkins from RPM
-      yum:
-        name: /tmp/jenkins.rpm
-        state: present
-
+ 
     - name: Start Jenkins service
       service:
         name: jenkins
         state: started
-
-    - name: Enable Jenkins to start on boot
+ 
+    - name: Enable Jenkins service
       systemd:
         name: jenkins
         enabled: true
-
+ 
     - name: Wait for Jenkins port 8080 to be available
       wait_for:
         port: 8080
         delay: 30
-        timeout: 300
-
+        state: started
+ 
     - name: Get Jenkins initial admin password
       shell: cat /var/lib/jenkins/secrets/initialAdminPassword
       register: jenkinspass
-
-    - name: Display Jenkins initial admin password
+ 
+    - name: Display Jenkins admin password
       debug:
         var: jenkinspass.stdout
