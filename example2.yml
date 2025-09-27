@@ -1,5 +1,5 @@
 ---
-- name: Setup web servers and deploy Flipkart clone
+- name: Setup web server and deploy Flipkart clone
   hosts: webservers
   become: true
   connection: ssh
@@ -31,7 +31,7 @@
         group: ansible
         mode: '0755'
 
-    - name: Clone the Git repository into /home/ansible/Ansible-Playbook
+    - name: Clone the Git repository
       ansible.builtin.git:
         repo: https://github.com/Msocial123/Flipkart-Clone.git
         dest: /home/ansible/Ansible-Playbook
@@ -39,8 +39,27 @@
         force: yes
       become_user: ansible
 
-    - name: Start and enable httpd service
+    - name: Start and enable httpd
       ansible.builtin.service:
         name: httpd
         state: started
         enabled: true
+
+    - name: Configure Apache to serve the cloned repo
+      ansible.builtin.copy:
+        dest: /etc/httpd/conf.d/flipkart.conf
+        content: |
+          <VirtualHost *:80>
+              DocumentRoot "/home/ansible/Ansible-Playbook"
+              <Directory "/home/ansible/Ansible-Playbook">
+                  AllowOverride All
+                  Require all granted
+              </Directory>
+          </VirtualHost>
+      notify: Restart Apache
+
+  handlers:
+    - name: Restart Apache
+      ansible.builtin.service:
+        name: httpd
+        state: restarted
