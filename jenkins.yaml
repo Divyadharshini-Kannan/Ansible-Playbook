@@ -20,16 +20,10 @@
         key: https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
         state: present
 
-    - name: Download EPEL release RPM manually
-      get_url:
-        url: http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-        dest: /tmp/epel-release-latest-7.noarch.rpm
-
-    - name: Install EPEL release RPM
-      yum:
-        name: /tmp/epel-release-latest-7.noarch.rpm
-        state: present
-        disable_gpg_check: true
+    - name: Enable EPEL repository using amazon-linux-extras
+      shell: amazon-linux-extras install epel -y
+      args:
+        creates: /etc/yum.repos.d/epel.repo
 
     - name: Install Jenkins
       yum:
@@ -59,4 +53,3 @@
     - name: Display Jenkins initial admin password
       debug:
         var: jenkinspass.stdout
-
