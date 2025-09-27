@@ -20,4 +20,4 @@
      action: service name=httpd state=started
 
    - name: set permission to the clone repository 
-     action: file path=/home/ansible/Ansible-Playbook owner=Apache group=Apache mode='0755'state=directory recurse=yes
+     action: file path=/home/ansible/Ansible-Playbook owner=Capgemini group=Capgemini state=directory recurse=yes
